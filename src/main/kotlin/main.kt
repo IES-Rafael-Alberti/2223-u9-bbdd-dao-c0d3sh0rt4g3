@@ -1,39 +1,46 @@
-data class Ctf(val id: Int, val grupoId: Int, val puntuacion: Int)
-data class Grupo(val grupoid: Int, val mejorCtfId: Int = 0)
 
 fun main(args: Array<String>) {
 
-    val participaciones = listOf(Ctf(1, 1, 3), Ctf(1, 2, 101), Ctf(2, 2, 3), Ctf(2, 1, 50), Ctf(2, 3, 1), Ctf(3, 1, 50), Ctf(3, 3, 5))
-    val mejoresCtfByGroupId = calculaMejoresResultados(participaciones)
+    val participants = listOf(
+        Ctf(1, 1, 3),
+        Ctf(1, 2, 101),
+        Ctf(2, 2, 3),
+        Ctf(2, 1, 50),
+        Ctf(2, 3, 1),
+        Ctf(3, 1, 50),
+        Ctf(3, 3, 5))
+    val mejoresCtfByGroupId = calcBestResults(participants)
     println(mejoresCtfByGroupId)
-
+    println("Command?")
+    val command = readln()
+    println(CommandExecutor().execution(command))
 }
 
 /**
  * TODO
  *
- * @param participaciones
+ * @param participants
  * @return devuelve un mutableMapOf<Int, Pair<Int, Ctf>> donde
- *      Key: el grupoId del grupo
+ *      Key: el groupId del grupo
  *      Pair:
  *          first: Mejor posición
  *          second: Objeto CTF el que mejor ha quedado
  */
-private fun calculaMejoresResultados(participaciones: List<Ctf>): MutableMap<Int, Pair<Int, Ctf>> {
-    val participacionesByCTFId = participaciones.groupBy { it.id }
-    var participacionesByGrupoId = participaciones.groupBy { it.grupoId }
+private fun calcBestResults(participants: List<Ctf>): MutableMap<Int, Pair<Int, Ctf>> {
+    val participantsByCTFId = participants.groupBy { it.id }
+    var participantsByGroupId = participants.groupBy { it.groupId }
     val mejoresCtfByGroupId = mutableMapOf<Int, Pair<Int, Ctf>>()
-    participacionesByCTFId.values.forEach { ctfs ->
-        val ctfsOrderByPuntuacion = ctfs.sortedBy { it.puntuacion }.reversed()
-        participacionesByGrupoId.keys.forEach { grupoId ->
-            val posicionNueva = ctfsOrderByPuntuacion.indexOfFirst { it.grupoId == grupoId }
+    participantsByCTFId.values.forEach { ctfs ->
+        val ctfsOrderByScore = ctfs.sortedBy { it.score }.reversed()
+        participantsByGroupId.keys.forEach { groupId ->
+            val posicionNueva = ctfsOrderByScore.indexOfFirst { it.groupId == groupId }
             if (posicionNueva >= 0) {
-                val posicionMejor = mejoresCtfByGroupId.getOrDefault(grupoId, null)
+                val posicionMejor = mejoresCtfByGroupId.getOrDefault(groupId, null)
                 if (posicionMejor != null) {
                     if (posicionNueva < posicionMejor.first)
-                        mejoresCtfByGroupId.set(grupoId, Pair(posicionNueva, ctfsOrderByPuntuacion.get(posicionNueva)))
+                        mejoresCtfByGroupId.set(groupId, Pair(posicionNueva, ctfsOrderByScore.get(posicionNueva)))
                 } else
-                    mejoresCtfByGroupId.set(grupoId, Pair(posicionNueva, ctfsOrderByPuntuacion.get(posicionNueva)))
+                    mejoresCtfByGroupId.set(groupId, Pair(posicionNueva, ctfsOrderByScore.get(posicionNueva)))
 
             }
         }
