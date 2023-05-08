@@ -42,7 +42,7 @@ class ManageDBs {
 
             i("service.ManageDBs.checkCTFs" ,"The groups table already exists")
         }catch (e: SQLException){
-            ManageDBs().createCtfs()
+            ManageDBs().checkGroups()
         }
     }
 
@@ -83,6 +83,7 @@ class ManageDBs {
 
         val connection = DriverManager.getConnection("jdbc:h2:./default", "user", "user")
         val statement = connection.createStatement()
+
         sql = "CREATE TABLE CTFS(" +
                 "CTFid INT NOT NULL," +
                 "grupoid INT NOT NULL," +
@@ -99,6 +100,7 @@ class ManageDBs {
     private fun alterGroups(){
         val connection = DriverManager.getConnection("jdbc:h2:./default", "user", "user")
         val statement = connection.createStatement()
+
         sql = "ALTER TABLE GRUPOS" +
                 " ADD FOREIGN KEY (mejorposCTFid, grupoid)" +
                 " REFERENCES CTFS(CTFid,grupoid);"
@@ -108,5 +110,36 @@ class ManageDBs {
         connection.close()
 
         i("service.ManageDBs.alterGroups" ,"Groups table altered")
+    }
+    //Checks if the groupId exists on the group table
+     internal fun checkGroupExistence(groupId: Int) {
+        val connection = DriverManager.getConnection("jdbc:h2:./default", "user", "user")
+        val statement = connection.createStatement()
+
+        val groupCheck = statement.executeQuery("SELECT COUNT(*) FROM GRUPOS WHERE GRUPOID = $groupId")
+        groupCheck.next()
+        val count = groupCheck.getInt(1)
+
+        if (count == 0) {
+            throw Exception("The group with id $groupId doesn't exist in the groups table")
+        }
+
+        groupCheck.close()
+        statement.close()
+        connection.close()
+    }
+
+    fun getGroupName(groupId: Int): String{
+        val statement = connection.createStatement()
+
+        val nameGot = statement.executeQuery("SELECT GRUPODESC FROM GRUPOS WHERE GRUPOID = $groupId")
+        nameGot.next()
+        val groupName = nameGot.getString(1)
+
+        nameGot.close()
+        statement.close()
+        connection.close()
+
+        return groupName
     }
 }

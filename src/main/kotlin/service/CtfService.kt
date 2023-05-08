@@ -4,7 +4,7 @@ import Groups
 
 interface CtfService {
     //Adds a competitor with ctf ID, a group ID and a score on the CTF table.
-    fun addCompetitor(command: String)
+    fun addCompetitor(command: MutableList<String>)
     //Deletes a specified competitor from a CTF on the CTF table.
-    fun deleteCompetitor(command: String)
+    fun deleteCompetitor(command: MutableList<String>)
 }

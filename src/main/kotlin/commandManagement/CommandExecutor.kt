@@ -1,17 +1,20 @@
 package commandManagement
 
+import dao.CtfDAO
 import i
-import service.GroupsServiceImpl
-import service.ManageDBs
 
 class CommandExecutor {
     fun execution(commandGiven: String){
-        val command = CommandParser().parse(commandGiven)
+        val command = CommandParser().parse(commandGiven).toMutableList()
         i("commandManagement.CommandExecutor.execution", "Command that starts with ${command[0]} received.")
         when(command[0]){
-            "-a" -> ManageDBs().checkGroups() //Calls function to add new competitor.
-            "-d" -> TODO() //Calls function to delete a competitor.
-            "-l" -> TODO() //Calls function to show group info.
+            //Calls function to add new competitor.
+            "-a" -> CtfDAO().addCompetitor(command)
+            //Calls function to delete a competitor.
+            "-d" -> CtfDAO().deleteCompetitor(command)
+            //Calls function to show group info.
+            "-l" -> TODO()
+            else -> throw Exception("The command introduced doesn't exists")
         }
     }
 }

@@ -28,7 +28,7 @@ fun main(args: Array<String>) {
  *          second: Objeto CTF el que mejor ha quedado
  */
 private fun calcBestResults(participants: List<Ctf>): MutableMap<Int, Pair<Int, Ctf>> {
-    val participantsByCTFId = participants.groupBy { it.id }
+    val participantsByCTFId = participants.groupBy { it.ctfId }
     var participantsByGroupId = participants.groupBy { it.groupId }
     val mejoresCtfByGroupId = mutableMapOf<Int, Pair<Int, Ctf>>()
     participantsByCTFId.values.forEach { ctfs ->

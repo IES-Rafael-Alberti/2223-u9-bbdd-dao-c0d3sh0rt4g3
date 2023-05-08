@@ -2,12 +2,9 @@ package service
 
 import Ctf
 import Groups
-import i
-import java.sql.DriverManager
-import java.sql.SQLException
 
-class GroupsServiceImpl: GrupsService {
-    override fun showCompetitor(command: String): List<Groups> {
+class GroupsServiceImpl: GroupsService {
+    override fun showCompetitor(command: MutableList<String>): List<Groups> {
         TODO("Not yet implemented")
     }
 
