@@ -24,7 +24,7 @@ class GroupsServiceImpl: GroupsService {
             println("Processed: Group $groupDesc participation info:")
             println("GROUP: $groupIdGiven $groupDesc BEST CTF: $bestCtf")
 
-            //addBestCtfs()
+            addBestCtfs()
             statement.close()
             connection.close()
         }catch (e: SQLException){

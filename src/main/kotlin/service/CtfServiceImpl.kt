@@ -35,7 +35,7 @@ class CtfServiceImpl: CtfService {
             i("service.CtfServiceImpl.addCompetitor", "Processed: Added participation of the group $groupName" +
                     " on the CTF $ctfId with a score of $score")
             println("Processed: Added participation of the group $groupName on the CTF $ctfId with a score of $score")
-            listOfCTFs()
+            GroupsServiceImpl().addBestCtfs()
         }else{
             println("ERROR: Invalid number of parameters on the given command")
         }
@@ -61,6 +61,7 @@ class CtfServiceImpl: CtfService {
             statement.close()
             connection.close()
 
+            GroupsServiceImpl().addBestCtfs()
             i("service.CtfServiceImpl.addCompetitor", "Processed: Deleted participation of the group " +
                     "$groupName from the CTF $ctfId")
             println("Processed: Deleted participation of the group $groupName from the CTF $ctfId")
