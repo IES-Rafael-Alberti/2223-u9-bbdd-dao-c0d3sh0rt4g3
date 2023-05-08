@@ -1,6 +1,6 @@
 package commandManagement
 
-class CommandParser(){
+class CommandParser{
     fun parse(commandToParse: String): MutableList<String>{
         val whiteSpaceRegex = "\\s+".toRegex()
         val commandContent = commandToParse.split(whiteSpaceRegex).toMutableList()

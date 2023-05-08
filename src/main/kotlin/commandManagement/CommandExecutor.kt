@@ -1,6 +1,7 @@
 package commandManagement
 
 import dao.CtfDAO
+import dao.GroupsDAO
 import i
 
 class CommandExecutor {
@@ -13,7 +14,7 @@ class CommandExecutor {
             //Calls function to delete a competitor.
             "-d" -> CtfDAO().deleteCompetitor(command)
             //Calls function to show group info.
-            "-l" -> TODO()
+            "-l" -> GroupsDAO().showCompetitor(command)
             else -> throw Exception("The command introduced doesn't exists")
         }
     }

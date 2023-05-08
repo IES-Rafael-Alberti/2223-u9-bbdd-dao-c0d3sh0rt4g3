@@ -35,6 +35,7 @@ class CtfServiceImpl: CtfService {
             i("service.CtfServiceImpl.addCompetitor", "Processed: Added participation of the group $groupName" +
                     " on the CTF $ctfId with a score of $score")
             println("Processed: Added participation of the group $groupName on the CTF $ctfId with a score of $score")
+            listOfCTFs()
         }else{
             println("ERROR: Invalid number of parameters on the given command")
         }
@@ -66,5 +67,26 @@ class CtfServiceImpl: CtfService {
         }else{
             println("ERROR: Invalid number of parameters on the given command")
         }
+    }
+
+    override fun listOfCTFs(): MutableList<Ctf> {
+        val connection = DriverManager.getConnection("jdbc:h2:./default", "user", "user")
+        val statement = connection.createStatement()
+        val allCtfsFromTable = statement.executeQuery("SELECT * FROM CTFS")
+        val ctfs = mutableListOf<Ctf>()
+
+        while (allCtfsFromTable.next()) {
+            val ctfId = allCtfsFromTable.getInt("CTFID")
+            val groupId = allCtfsFromTable.getInt("GRUPOID")
+            val score = allCtfsFromTable.getInt("PUNTUACION")
+            val ctf = Ctf(ctfId, groupId, score)
+            ctfs.add(ctf)
+        }
+
+        allCtfsFromTable.close()
+        statement.close()
+        connection.close()
+
+        return ctfs
     }
 }

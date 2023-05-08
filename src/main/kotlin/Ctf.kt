@@ -1,2 +1,2 @@
-data class Ctf(val ctfId: Int, val groupId: Int, val score: Int)
+data class Ctf(var ctfId: Int, var groupId: Int, var score: Int)
 
